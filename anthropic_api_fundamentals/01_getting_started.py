@@ -11,7 +11,7 @@ my_first_message = client.messages.create(
     model="claude-3-haiku-20240307",
     max_tokens=1000,
     messages=[
-        {"role": "user", "content": "Hi there! Give me a concise laugh!"}
+        {"role": "user", "content": "Tell me a short joke!"}
     ]
 )
 
