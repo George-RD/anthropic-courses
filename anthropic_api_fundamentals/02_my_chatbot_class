@@ -1,0 +1,53 @@
+from dotenv import load_dotenv
+from anthropic import Anthropic
+
+#load environment variable
+load_dotenv()
+
+#automatically looks for an "ANTHROPIC_API_KEY" environment variable
+client = Anthropic()
+
+class Chatbot:
+    def __init__(self):
+        self.chatlog = []
+ #def appendmessage(message):
+
+    def send(self,content:str,role="user"):
+        self.chatlog.append({"role": role,"content": content})
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            system="You are Claude, the helpful hot dog vendor. You will greet customers, and guide them to customize their sausage from your array of options",
+            max_tokens=500,
+            messages = self.chatlog
+        )
+        self.chatlog.append({"role": "assistant","content":response.content[0].text})
+        return response.content[0].text
+    
+    def activate(self):
+        while True:
+            user_input = input("You: ")
+           # print(f"You: {user_input}")  # only for using in jupyter notebook
+            if user_input == "q" or user_input == "":
+                return print("Assistant: bye!")
+            else:
+                assistant_response = self.send(user_input)
+                print(f"Assistant: {assistant_response}\n")
+
+
+chatbot = Chatbot()
+
+chatbot.activate()
+
+# Commented out orig implementation, experimenting with this in the class!
+
+# while True:
+#     user_input = input("You:")
+#     print(f"You: {user_input}")
+#     if user_input == "q":
+#         print("Assistant: bye!")
+#         break
+#     else:
+#         assistant_response = chatbot.send(user_input)
+#         print(f"Assistant: {assistant_response}")
+
+
